@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}">
+
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+	<!-- Header -->
+	<div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+	<!-- /Header -->
+
+	<!-- Sidebar -->
+	<div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+	<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					<div class="alert alert-primary alert-dismissible fade show" id="updateAlert" role="alert" th:if="${update}">
+						<strong>Update!</strong> <span th:text="${update}"></span>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="alert alert-danger alert-dismissible fade show" id="deleteAlert" role="alert" th:if="${delete}">
+						<strong>Error!</strong> <span th:text="${delete}"></span>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="alert alert-success alert-dismissible fade show" id="createAlert" role="alert" th:if="${create}">
+						<strong>Success!</strong> <span th:text="${create}"></span>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="alert alert-info alert-dismissible fade show" id="activeAlert" role="alert" th:if="${active}">
+						<strong>Note!</strong> <span th:text="${active}"></span>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="alert alert-warning alert-dismissible fade show" id="warningAlert" role="alert" th:if="${warning}">
+						<strong>Warning!</strong> <span th:text="${warning}"></span>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="page-title">List Article</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+									<li class="breadcrumb-item active">List Article</li>
+								</ul>
+							</div>
+							<div class="col-auto float-right ml-auto">
+								<a th:href="@{/article/new-article}" class="btn add-btn"><i class="fa fa-plus"></i> Create Article</a>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<!-- Search Filter -->
+					<form action="/article/lst/search" method="GET">
+						<div class="row filter-row">
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<div class="form-group form-focus select-focus">
+									<select class="select floating" name="userId">
+										<option value="" disabled selected>User Name</option>
+										<option th:each="user : ${lstUser}"
+												th:value="${user.id}"
+												th:text="${user.firstName + ' ' + user.lastName}"
+												th:selected="${user.id.toString() == userId}">
+										</option>
+									</select>
+									<label class="focus-label">User Name</label>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<div class="form-group form-focus focused">
+									<input class="form-control floating datetimepicker"
+										   type="text"
+										   name="fromDate"
+										   th:value="${fromDate}" required>
+									<label class="focus-label">From</label>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<div class="form-group form-focus focused">
+									<input class="form-control floating datetimepicker"
+										   type="text"
+										   name="toDate"
+										   th:value="${toDate}" required>
+									<label class="focus-label">To</label>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<div class="form-group form-focus select-focus">
+									<select class="select floating" name="categoryId">
+										<option value="" disabled selected>Select Category</option>
+										<option th:each="category : ${lstCategory}"
+												th:value="${category.id}"
+												th:text="${category.name}"
+												th:selected="${category.id.toString() == categoryId}">
+										</option>
+									</select>
+									<label class="focus-label">Category</label>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<div class="form-group form-focus select-focus">
+									<select class="select floating" name="marquee">
+										<option value="" disabled selected>Select Marquee</option>
+										<option value="1" th:selected="${marquee == '1'}">Show</option>
+										<option value="0" th:selected="${marquee == '0'}">Off</option>
+									</select>
+									<label class="focus-label">Marquee</label>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+								<button type="submit" class="btn btn-success btn-block">Search</button>
+							</div>
+						</div>
+					</form>
+
+					<!-- /Search Filter -->
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table class="table table-striped custom-table datatable">
+									<thead>
+										<tr>
+											<th class="text-center">#</th>
+											<th>Title</th>
+											<th class="text-center">Category</th>
+											<th class="text-center" style="width: 100px;">Create By</th>
+											<th class="text-center" style="width: 80px;">Status</th>
+											<th class="text-right" style="width: 30px;">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="responses, iterStat : ${lstdata}">
+											<td class="text-center" th:text="${iterStat.index + 1}"></td>
+											<td th:text="${responses.title}"></td>
+											<td class="text-center" th:text="${responses.name}"></td>
+											<td class="text-center">
+												<span th:text="${responses.fullName}"></span><br>
+												<span th:text="${#temporals.format(responses.createDate, 'dd-MM-yyyy')}"></span>
+											</td>
+											<td class="text-center">
+												<div class="dropdown action-label">
+													<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+														<i class="fa" th:classappend="${responses.status == '1'} ? 'fa-dot-circle-o text-success' : 'fa-dot-circle-o text-danger'"></i>
+														<span th:text="${responses.status == '1'} ? 'Active' : 'Inactive'"></span>
+													</a>
+													<div class="dropdown-menu">
+														<a class="dropdown-item" th:href="@{/article/activate/{id}(id=${responses.id})}">
+															<i class="fa fa-dot-circle-o text-success"></i> Active
+														</a>
+														<a class="dropdown-item" th:href="@{/article/dis-activate/{id}(id=${responses.id})}">
+															<i class="fa fa-dot-circle-o text-danger"></i> Inactive
+														</a>
+													</div>
+												</div>
+											</td>
+											<td class="text-right">
+												<div class="dropdown dropdown-action">
+													<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+													<div class="dropdown-menu dropdown-menu-right">
+														<a class="dropdown-item" th:href="@{/article/find-by/{id}(id=${responses.id})}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+														<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project" th:data-id="${responses.id}" th:if="${isAdmin}">
+															<i class="fa fa-trash-o m-r-5"></i> Delete
+														</a>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+				<div class="modal custom-modal fade" id="delete_project" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Article</h3>
+									<p>Are you sure you want to delete?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="javascript:void(0);" class="btn btn-primary continue-btn" id="confirmDelete">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+            </div>
+			<!-- /Page Wrapper -->
+
+        </div>
+		<!-- /Main Wrapper -->
+
+	<!-- jQuery -->
+	<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+	<!-- jQuery -->
+	<script>
+		let articleId = ''; // Store the ARTICLE_ID for deletion
+
+		// When the modal is triggered, set the articleId
+		$('#delete_project').on('show.bs.modal', function (event) {
+			const button = $(event.relatedTarget); // Button that triggered the modal
+			articleId = button.data('id'); // Extract ARTICLE_ID from data-id
+		});
+
+		// Handle the delete confirmation button click
+		$('#confirmDelete').on('click', function () {
+			if (articleId) {
+				const deleteUrl = `/article/delete/${articleId}`; // Construct the delete URL dynamically
+				$.ajax({
+					url: deleteUrl,
+					type: 'DELETE', // HTTP DELETE request
+					success: function (response) {
+						// Notify user and refresh the page
+						location.reload(); // Optionally reload to update the UI
+					},
+					error: function (xhr, status, error) {
+						// Handle the error
+						alert(`Failed to delete the article: ${xhr.responseText || error}`);
+					}
+				});
+			} else {
+				alert('Invalid article ID.');
+			}
+		});
+	</script>
+
+    </body>
+</html>

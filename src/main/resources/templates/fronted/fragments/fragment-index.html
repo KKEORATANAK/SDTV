@@ -1,0 +1,183 @@
+<!-- templates/layout.html} -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- head of navbar -->
+<head th:fragment="head">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets_frontend/img/icon.png}" />
+  <!-- bootstrap-sytle -->
+  <link rel="stylesheet" th:href="@{/assets_frontend/css/bootstrap.css}" />
+  <!-- custom-style -->
+  <link rel="stylesheet" th:href="@{/assets_frontend/css/style.css}" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Get the latest breaking news, updates, and in-depth coverage on politics, business, culture, and more in Cambodia. Stay informed with SDTV NEWS." />
+  <meta name="keywords" content="Cambodia News, SDTV News, SDTV, SDTV-News, FRESH NEWS, freshnews, fresh news, freshnewsasia.com, freshnewsasia, Latest News Cambodia, Cambodian Politics, Business News, Breaking News, Khmer News" />
+  <meta name="robots" content="index, follow" />
+  <!-- Fonts links -->
+  <link href="https://fonts.googleapis.com/css2?family=Hanuman&display=swap" rel="stylesheet" />
+  <title>SDTV | NEWS</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<!-- end head of navbar -->
+
+<!-- header of navbar -->
+<nav class="navbar navbar-expand-xl navbar-light bg-light rounded-top pt-4 px-3" th:fragment="nav" >
+  <div class="container-fluid">
+    <a class="navbar-brand text-danger d-none d-lg-block" th:href="@{/home/}">SDTV News</a>
+    <!-- logo -->
+    <div class="col-8 my-auto d-lg-none mb-2">
+      <img th:src="@{/assets_frontend/img/SDTV1.png}" alt="logo" style="width: 90%" />
+    </div>
+    <!-- end logo -->
+    <button class="navbar-toggler d-xl-none ms-auto"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId"
+            aria-expanded="false"
+            aria-label="Toggle navigation" >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId" style="font-family: sans-serif, 'Hanuman'">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item" th:each="category : ${lstActiveCategory}">
+          <!-- Dynamically set the href and text -->
+          <a class="nav-link" th:href="@{/home/category/{cateName}(cateName=${category.name})}" th:text="${category.name}"></a>
+        </li>
+      </ul>
+<!--      <form class="d-flex my-2 my-lg-0">-->
+<!--        <input class="form-control rounded-5" type="text" placeholder="Search..."/>-->
+<!--      </form>-->
+      <form class="d-flex my-2 my-lg-0" id="search-form" method="get" th:action="@{/home/category-search}">
+        <input id="search-input" class="form-control rounded-5" type="text" placeholder="Search here" name="keyWord">
+<!--        <button class="btn" type="submit"><i class="fa fa-search"></i></button>-->
+      </form>
+    </div>
+  </div>
+</nav>
+<!-- end header of navbar -->
+
+<div th:fragment="sidebar">
+
+</div>
+<!-- ads and logo -->
+<div th:fragment="logo-ads" class="row mb-2">
+  <!-- logo -->
+  <div class="col-md-4 my-auto d-none d-md-block">
+    <img th:src="@{/assets_frontend/img/SDTV1.png}" alt="logo" style="width: 90%" />
+  </div>
+  <!-- end logo -->
+  <!-- ads -->
+  <div class="col-md-8" th:each="ads : ${adsList}">
+    <!-- Check if the ad's local field is 'Content Bottom' -->
+    <div th:if="${ads.local == 'Header Top'}">
+      <a th:href="@{${ads.url}}" target="_blank">
+        <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="d-block w-100" />
+      </a>
+    </div>
+  </div>
+  <!-- end ads -->
+</div>
+<!-- end ads and logo -->
+
+<!-- sidebar-right-ads -->
+<div th:fragment="sidebar-right-ads" class="col-md-3 d-none d-md-block">
+  <div class="row">
+    <div class="col-md-12 mb-2" th:each="ads : ${adsList}">
+      <!-- Check if the ad's local field is 'Right Top' -->
+      <div th:if="${ads.local == 'Right Top'}">
+        <a th:href="@{${ads.url}}" target="_blank">
+          <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="w-100" />
+        </a>
+      </div>
+    </div>
+    <div class="col-md-12 mb-2" th:each="ads : ${adsList}">
+      <!-- Check if the ad's local field is 'Right Middle' -->
+      <div th:if="${ads.local == 'Right Middle'}">
+        <a th:href="@{${ads.url}}" target="_blank">
+          <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="w-100" />
+        </a>
+      </div>
+    </div>
+    <div class="col-md-12 mb-2" th:each="ads : ${adsList}">
+      <!-- Check if the ad's local field is 'Right Bottom' -->
+      <div th:if="${ads.local == 'Right Bottom'}">
+        <a th:href="@{${ads.url}}" target="_blank">
+          <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="w-100" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end sidebar-right-ads -->
+
+
+<!-- marquee text slider -->
+<marquee th:fragment="marquee" class="marquee-text my-2" behavior="scroll" direction="left" scrollamount="8">
+  <!-- Dynamically inject marqueeText into the marquee -->
+  <span th:text="${concatenatedMarquee}"></span>
+</marquee>
+<!-- end marquee text slider -->
+
+<!-- footer -->
+<footer th:fragment="footer" class="container-fluid mt-4 d-none d-md-block">
+  <div class="row">
+    <div class="col-md-6 ps-0 pt-4 pb-5">
+      <h4>Section</h4>
+      <div class="row" style="font-family: sans-serif, 'Hanuman'">
+        <div th:each="category : ${lstActiveCategory}" class="col-4">
+          <a th:href="@{/home/category/{cateName}(cateName=${category.name})}" class="nav-link" th:text="${category.name}"></a>
+        </div>
+      </div>
+      <h4 class="mt-4">About Us</h4>
+      <div class="row">
+        <div class="col-4">
+          <a th:href="@{/home/contact}" class="nav-link">About</a>
+        </div>
+        <div class="col-4">
+          <a th:href="@{/home/contact}" class="nav-link">Contact us</a>
+        </div>
+      </div>
+      <h4 class="mt-4">Advertise with us</h4>
+      <p>Tel: 077 818 204, Email: sdtvnewsonline@gmail.com & Telegram</p>
+    </div>
+    <div class="col-6 border-start ps-5 pt-4 pb-5">
+      <h4>Follow our News</h4>
+      <div class="row">
+        <div class="col-1 mx-2">
+          <a th:href="@{${facebookLink}}" target="_blank">
+            <img th:src="@{/assets_frontend/img/facebook.png}" alt="facebook page" class="icon" />
+          </a>
+        </div>
+        <div class="col-1 mx-2">
+          <a th:href="@{${youtubeLink}}" target="_blank">
+            <img th:src="@{/assets_frontend/img/youtube.png}" alt="" class="icon" />
+          </a>
+        </div>
+        <div class="col-1 mx-2">
+          <a th:href="@{${telegramLink}}" target="_blank">
+            <img th:src="@{/assets_frontend/img/telegrame.png}" alt="" class="icon" />
+          </a>
+        </div>
+      </div>
+      <h4 class="mt-4"></h4>
+      <p>Copyright © 2024 SDTV NEWS</p>
+      <h4>Address</h4>
+      <p class="mt-2">Group 2 Road, Chumrov Village, Sangkat Kork Roka, Phnom Penh,Cambodia</p>
+    </div>
+  </div>
+</footer>
+<!-- end footer -->
+
+<!-- scripts -->
+<div th:fragment="scripts">
+  <!-- bootstrap-js -->
+  <script th:src="@{/assets_frontend/js/bootstrap.bundle.js}"></script>
+</div>
+<!-- end scripts -->
+
+</html>

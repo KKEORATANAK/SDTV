@@ -1,0 +1,167 @@
+:root {
+  --default: 1rem;
+  --background: #2e073f;
+  --text-color: #fff;
+}
+
+body {
+  border-block-start: 3px solid #7a1cac;
+  background-color: var(--background);
+  color: var(--text-color);
+}
+
+.container-all {
+  margin: 0 17.5%;
+}
+
+.navbar {
+  margin-top: 1rem !important;
+}
+
+.marquee-text {
+  font-family: sans-serif, "Hanuman";
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  padding: 0.5rem;
+  background-color: var(--background);
+}
+
+.video-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.fs-7 {
+  font-size: 0.9rem;
+}
+
+.fs-7 td {
+  max-width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.article-title {
+  font-family: sans-serif, "Hanuman";
+  font-weight: bold;
+  color: var(--background);
+  line-height: 1.5;
+}
+
+.image-title {
+  font-family: sans-serif, "Hanuman";
+  color: var(--background);
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.no-underline:hover {
+  text-decoration: none;
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  font-family: sans-serif, "Hanuman";
+  line-height: 1.4;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.article-date {
+  color: #999;
+}
+
+.article-content {
+  color: #000;
+}
+
+.icon {
+  width: 40px;
+}
+
+.icon-share {
+  width: 25px;
+}
+
+/*404*/
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding: 5px 15px;
+  background-color: #fff;
+  margin-top: 20px;
+}
+.search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  padding: 10px;
+}
+.search-box button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.search-box button:hover {
+  background-color: #555;
+}
+.search-box .close-btn {
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+@media only screen and (max-width: 1399.98px) {
+  .container-all {
+    margin: 0 20%;
+  }
+}
+
+/* `xl` applies to large devices (less than 1200px) */
+@media only screen and (max-width: 1199.98px) {
+  .container-all {
+    margin: 0 15%;
+  }
+}
+
+/* `lg` applies to medium devices (less than 992px) */
+@media only screen and (max-width: 991.98px) {
+  .container-all {
+    margin: 0 10%;
+  }
+  .col-md-9 {
+    margin-top: 2%;
+  }
+}
+
+/* `md` applies to small devices (less than 768px) */
+@media only screen and (max-width: 767.98px) {
+  .container-all {
+    margin: 0 5%;
+  }
+}
+
+/* `sm` applies to extra small devices (less than 576px) */
+@media only screen and (max-width: 575.98px) {
+  .container-all {
+    margin: 0;
+  }
+
+  .ps-0 {
+    padding-inline-start: 1.5rem !important;
+  }
+}

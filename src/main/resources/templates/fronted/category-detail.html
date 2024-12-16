@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/fronted/fragments/fragment-index :: head}"> </head>
+
+
+<body>
+    <div class="container-all">
+      <!-- navbar -->
+      <nav th:replace="~{/fronted/fragments/fragment-index :: nav}"></nav>
+      <!-- end navbar -->
+      <div class="container-fluid bg-light px-4 pt-2 rounded-bottom">
+        <!-- ads and logo -->
+        <div th:replace="~{/fronted/fragments/fragment-index :: logo-ads}"></div>
+        <!-- end ads and logo -->
+        <!-- marquee text slider -->
+        <marquee th:replace="~{/fronted/fragments/fragment-index :: marquee}"> </marquee>
+        <!-- end marquee text slider -->
+
+        <div class="row">
+          <!-- content -->
+          <div class="col-md-9 pe-0">
+            <div class="row mb-3">
+              <!-- Content Top Advertisement Image -->
+              <div class="col-md-12 mt-1" th:each="ads : ${adsList}">
+                <!-- Check if the ad's local field is 'Content Top' -->
+                <div th:if="${ads.local == 'Content Top'}">
+                  <a th:href="@{${ads.url}}" target="_blank">
+                    <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="img-fluid w-100" />
+                  </a>
+                </div>
+              </div>
+              <!-- Content Middle Advertisement Image -->
+              <div class="col-md-12 mt-1" th:each="ads : ${adsList}">
+                <!-- Check if the ad's local field is 'Content Middle' -->
+                <div th:if="${ads.local == 'Content Middle'}">
+                  <a th:href="@{${ads.url}}" target="_blank">
+                    <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="img-fluid w-100" />
+                  </a>
+                </div>
+              </div>
+              <!-- Content -->
+
+              <!-- Article Content -->
+              <div class="col-md-12 mt-2" style="font-family: 'Hanuman', serif">
+                <h5 class="article-title">
+                  <span th:text="${newsArticles.title}"></span>
+                </h5>
+                <hr class="article-divider" style="color: #4d4d4d" />
+                <p class="article-date" th:text="${#temporals.format(newsArticles.createDate, 'yyyy-MM-dd hh:mm a')}"></p>
+
+                <!-- Share Icons -->
+                <div class="col-12">
+                  <div class="row align-items-center justify-content-start">
+                    <!-- Facebook Share -->
+                    <div class="col-auto">
+                      <a href="https://facebook.com/sharer/sharer.php?u=https://sdtv-news.com/article" target="_blank">
+                        <img th:src="@{/assets_frontend/img/facebook.png}" alt="Share on Facebook" class="icon-share" />
+                      </a>
+                    </div>
+                    <!-- Telegram Share -->
+                    <div class="col-auto">
+                      <a href="https://t.me/share/url?url=https://sdtv-news.com/article&text=Your%20Article%20Title" target="_blank" >
+                        <img th:src="@{/assets_frontend/img/telegrame.png}" alt="Share on Telegram" class="icon-share" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Article Text Content -->
+                <div class="article-content mt-3" th:utext="${newsArticles.content}"></div>
+              </div>
+            </div>
+          </div>
+          <!-- end content -->
+          <!-- Your custom script should come after jQuery is loaded -->
+          <script>
+            $(document).ready(function() {
+              // Add 'img-fluid mt-2' class to all <img> tags inside the .article-content div
+              $(".article-content img").addClass("img-fluid mt-2");
+            });
+          </script>
+
+          <!-- ads -->
+          <div th:replace="~{/fronted/fragments/fragment-index :: sidebar-right-ads}"></div>
+          <!--end ads -->
+        </div>
+      </div>
+      <!-- footer -->
+      <div th:replace="~{/fronted/fragments/fragment-index :: footer}"></div>
+      <!-- /footer -->
+    </div>
+
+    <!-- bootstrap-js -->
+    <!-- jQuery -->
+    <script th:src="@{/assets_frontend/js/bootstrap.bundle.js}"></script>
+    <!-- jQuery -->
+
+  </body>
+</html>

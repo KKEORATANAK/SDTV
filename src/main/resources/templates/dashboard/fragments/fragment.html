@@ -1,0 +1,189 @@
+<!-- templates/layout.html} -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta name="description" content="Smarthr - Bootstrap Admin Template">
+  <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+  <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dashboard - SDTV admin template</title>
+
+  <!-- jQuery UI CSS -->
+  <link rel="stylesheet" th:href="@{https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css}">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/favicon.png}">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+
+  <!-- Fontawesome CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/font-awesome.min.css}">
+
+  <!-- Lineawesome CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/line-awesome.min.css}">
+
+  <!-- Datatable CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/dataTables.bootstrap4.min.css}">
+
+  <!-- Select2 CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/select2.min.css}">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+
+  <!-- Summernote CSS -->
+  <link rel="stylesheet" th:href="@{/assets/plugins/summernote/dist/summernote-bs4.css}">
+
+  <!-- Datetimepicker CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/bootstrap-datetimepicker.min.css}">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script th:src="@{/assets/js/html5shiv.min.js}"></script>
+  <script th:src="@{/assets/js/respond.min.js}"></script>
+  <![endif]-->
+</head>
+
+<div th:fragment="header" class="header">
+  <!-- Logo -->
+  <div class="header-left">
+    <a th:href="@{/dashboard}" class="logo">
+      <img th:src="@{/assets/img/logo.png}" width="110" height="65" alt="">
+    </a>
+  </div>
+  <!-- /Logo -->
+
+  <a id="toggle_btn" href="javascript:void(0)">
+                  <span class="bar-icon">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                  </span>
+  </a>
+
+  <!-- Header Title -->
+  <div class="page-title-box">
+    <h3>SDTV NEWS</h3>
+  </div>
+  <!-- /Header Title -->
+
+  <a id="mobile_btn" class="mobile_btn" th:href="@{sidebar}"><i class="fa fa-bars"></i></a>
+
+  <!-- Header Menu -->
+  <ul class="nav user-menu">
+
+    <!-- Search -->
+    <li class="nav-item" style="padding-right: 23px;">
+      <div class="top-nav-search">
+        <a href="javascript:void(0)" class="responsive-search">
+          <i class="fa fa-search"></i>
+        </a>
+        <form id="search-form" method="get" th:action="@{/article/list-article-search}">
+          <input id="search-input" class="form-control" type="text" placeholder="Search here" name="keyWord">
+          <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+    </li>
+    <!-- /Search -->
+  </ul>
+  <!-- /Header Menu -->
+
+  <!-- Mobile Menu -->
+  <div class="dropdown mobile-user-menu">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" th:href="@{profile.html}">My Profile</a>
+      <a class="dropdown-item" th:href="@{settings.html}">Settings</a>
+      <a class="dropdown-item" th:href="@{login.html}">Logout</a>
+    </div>
+  </div>
+  <!-- /Mobile Menu -->
+
+</div>
+
+<div th:fragment="sidebar" class="sidebar" id="sidebar">
+  <div class="sidebar-inner slimscroll">
+    <div id="sidebar-menu" class="sidebar-menu">
+      <ul>
+        <li class="menu-title">
+          <span>Main</span>
+        </li>
+        <li>
+          <a th:href="@{/dashboard}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+        </li>
+        <li class="menu-title">
+          <span>Article</span>
+        </li>
+        <li>
+          <a th:href="@{/article/new-article}"><i class="la la-ticket"></i> <span>New Article</span></a>
+          <a th:href="@{/article/list-article}"><i class="la la-list"></i> <span>List Article</span></a>
+          <a th:href="@{/category/index}" th:if="${isAdmin}"><i class="la la-edit"></i> <span>Category</span></a>
+          <a th:href="@{/ads/index}" th:if="${isAdmin}"><i class="la la-money"></i> <span>ADS</span></a>
+        </li>
+        <li class="menu-title" th:if="${isAdmin}">
+          <span>Employees</span>
+        </li>
+        <li>
+          <a th:href="@{/user/index}" th:if="${isAdmin}"><i class="la la-user"></i> <span>User</span></a>
+          <a th:href="@{/role/index}" th:if="${isAdmin}"><i class="la la-key"></i> <span>Role</span></a>
+          <a th:href="@{/client/index}" th:if="${isAdmin}"><i class="la la-users"></i> <span>Clients</span></a>
+        </li>
+        <li class="menu-title">
+          <span>Sing Out</span>
+        </li>
+        <li>
+          <a th:href="@{/logout}"><i class="la la-times-circle"></i> <span> Logout</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<footer th:fragment="footer">
+  <p>&copy; 2024 My Site</p>
+</footer>
+
+
+
+<div th:fragment="scripts">
+  <!-- jQuery -->
+  <script th:src="@{/assets/js/jquery-3.2.1.min.js}"></script>
+
+  <!-- Bootstrap Core JS -->
+  <script th:src="@{/assets/js/popper.min.js}"></script>
+  <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+  <!-- Select2 JS -->
+  <script th:src="@{/assets/js/select2.min.js}"></script>
+
+  <!-- Slimscroll JS -->
+  <script th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+
+  <!-- Datatable JS -->
+  <script th:src="@{/assets/js/jquery.dataTables.min.js}"></script>
+  <script th:src="@{/assets/js/dataTables.bootstrap4.min.js}"></script>
+
+  <!-- Datetimepicker JS -->
+  <script th:src="@{/assets/js/moment.min.js}"></script>
+  <script th:src="@{/assets/js/bootstrap-datetimepicker.min.js}"></script>
+
+  <!-- Chart JS -->
+  <script th:src="@{/assets/plugins/raphael/raphael.min.js}"></script>
+
+  <!-- Custom JS -->
+  <script th:src="@{/assets/js/app.js}"></script>
+
+  <!-- Time Out Alert JS -->
+  <script th:src="@{/assets/timeout_alert/timeout.js}"></script>
+
+  <!-- jQuery UI JS -->
+  <script th:src="@{https://code.jquery.com/ui/1.13.2/jquery-ui.min.js}"></script>
+
+</div>
+
+
+</html>

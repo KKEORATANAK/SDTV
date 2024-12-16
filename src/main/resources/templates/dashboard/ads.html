@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}"></head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+    <!-- Header -->
+    <div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+            <div class="alert alert-primary alert-dismissible fade show" id="updateAlert" role="alert" th:if="${update}">
+                <strong>Update!</strong> <span th:text="${update}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" id="deleteAlert" role="alert" th:if="${delete}">
+                <strong>Error!</strong> <span th:text="${delete}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-success alert-dismissible fade show" id="createAlert" role="alert" th:if="${create}">
+                <strong>Success!</strong> <span th:text="${create}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-info alert-dismissible fade show" id="activeAlert" role="alert" th:if="${active}">
+                <strong>Note!</strong> <span th:text="${active}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show" id="warningAlert" role="alert" th:if="${warning}">
+                <strong>Warning!</strong> <span th:text="${warning}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Ads</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Ads</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_ads">
+                            <i class="fa fa-plus"></i> Add Ads</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <table class="table table-striped custom-table mb-0 datatable" id="tableReponse">
+                            <thead>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>URL Name</th>
+                                <th>Local ADS</th>
+                                <th>Create Date</th>
+                                <th style="width: 150px;">Status</th>
+                                <th class="text-right" style="width: 30px;">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="responses, iterStat : ${lstResponsesData}">
+                                    <td th:text="${iterStat.index + 1}"></td> <!-- Display the index + 1 for numbering -->
+
+                                    <td>
+                                        <a th:if="${#strings.isEmpty(responses.url)}" th:text="'N/A'"></a>
+                                        <a th:if="${!#strings.isEmpty(responses.url)}" th:href="@{${responses.url}}" target="_blank" th:text="'Click Here'"></a>
+                                    </td>
+                                    <td th:text="${responses.local}"></td>
+                                    <td th:text="${#temporals.format(responses.createDate, 'dd-MM-yyyy HH:mm a')}"></td>
+                                    <td>
+                                        <div class="dropdown action-label">
+                                            <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa" th:classappend="${responses.status == '1'} ? 'fa-dot-circle-o text-success' : 'fa-dot-circle-o text-danger'"></i>
+                                                <span th:text="${responses.status == '1'} ? 'Active' : 'Inactive'"></span>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" th:href="@{/ads/activate/{id}(id=${responses.id})}">
+                                                    <i class="fa fa-dot-circle-o text-success"></i> Active
+                                                </a>
+                                                <a class="dropdown-item" th:href="@{/ads/dis-activate/{id}(id=${responses.id})}">
+                                                    <i class="fa fa-dot-circle-o text-danger"></i> Inactive
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                               aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item edit-ads" href="#" data-toggle="modal"
+                                                   data-target="#edit_adss" th:attr="data-id=${responses.id}">
+                                                    <i class="fa fa-pencil m-r-5"></i> Edit
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Content -->
+
+        <!-- Add Ads Modal -->
+        <div id="add_ads" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Ads</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/ads/create}" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>URL Name</label>
+                                <input class="form-control" name="url" type="text" placeholder="www.url.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Local ADS <span class="text-danger">*</span></label>
+                                <select class="select" name="local" required>
+                                    <option value="" disabled selected>Select ADS</option>
+                                    <option value="Header Top">Header Top</option>
+                                    <option value="Content Top">Content Top</option>
+                                    <option value="Content Middle">Content Middle</option>
+                                    <option value="Content Bottom">Content Bottom</option>
+                                    <option value="Right Top">Right Top</option>
+                                    <option value="Right Middle">Right Middle</option>
+                                    <option value="Right Bottom">Right Bottom</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Upload Image <span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" accept="image/*" name="image" required>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn" id="btn-submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Ads Modal -->
+
+        <!-- Edit Ads Modal -->
+        <div id="edit_adss" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Ads</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/ads/update}" method="POST" enctype="multipart/form-data">
+                            <input class="form-control"  name="id" type="hidden">
+                            <input class="form-control"  name="status" type="hidden">
+                            <div class="form-group">
+                                <label>URL Name</label>
+                                <input class="form-control" name="url" type="text" placeholder="www.url.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Local ADS <span class="text-danger">*</span></label>
+                                <select class="select" name="local" id="localSelect" required>
+                                    <option value="Header Top">Header Top</option>
+                                    <option value="Content Top">Content Top</option>
+                                    <option value="Content Middle">Content Middle</option>
+                                    <option value="Content Bottom">Content Bottom</option>
+                                    <option value="Right Top">Right Top</option>
+                                    <option value="Right Middle">Right Middle</option>
+                                    <option value="Right Bottom">Right Bottom</option>
+                                </select>
+                            </div>
+                            <!-- Image Preview Section -->
+                            <div class="form-group">
+                                <label>Upload Image <span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" accept="image/*" name="image">
+                            </div>
+                            <div class="form-group">
+                                <label>Current Image:</label>
+                                <div id="imagePreviewContainer">
+                                    <img id="imagePreview" src="" alt="Current Image" class="img-fluid" style="max-width: 100%; max-height: 200px;">
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Ads Modal -->
+
+        <!-- Delete Ads Modal -->
+        <div class="modal custom-modal fade" id="delete_ads" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Ads</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-dismiss="modal"
+                                       class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Ads Modal -->
+
+<!--        &lt;!&ndash; The Modal Image &ndash;&gt;-->
+<!--        <div class="modal custom-modal fade" id="image_ads" role="dialog">-->
+<!--            <div class="modal-dialog modal-dialog-centered modal-lg">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-body">-->
+<!--                        &lt;!&ndash; Display Image Here &ndash;&gt;-->
+<!--                        <div class="image-preview">-->
+<!--                            <img id="adImage" src="" alt="Ad Image" class="img-fluid" style="max-width: 100%; max-height: 600px;">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+</div>
+<!-- /Main Wrapper -->
+<!-- jQuery -->
+<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+<!-- jQuery -->
+<script th:src="@{/assets/js_dashboard/ads.js}"></script>
+
+
+</body>
+</html>

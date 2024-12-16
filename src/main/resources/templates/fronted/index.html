@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head th:replace="~{/fronted/fragments/fragment-index :: head}"> </head>
+
+  <body>
+    <div class="container-all">
+      <!-- navbar -->
+      <nav th:replace="~{/fronted/fragments/fragment-index :: nav}"></nav>
+      <!-- end navbar -->
+      <div class="container-fluid bg-light px-4 pt-2 rounded-bottom">
+        <!-- ads and logo -->
+        <div th:replace="~{/fronted/fragments/fragment-index :: logo-ads}"></div>
+        <!-- end ads and logo -->
+        <!-- marquee text slider -->
+        <marquee th:replace="~{/fronted/fragments/fragment-index :: marquee}" > </marquee>
+        <!-- end marquee text slider -->
+        <div class="row">
+          <!-- content -->
+          <div class="col-md-9 pe-0">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- video player -->
+                <iframe class="video-player"
+                  th:src="@{${youtubeVideolink}}"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen>
+                </iframe>
+                <!-- end video player -->
+                <!-- ads -->
+                <div class="col-md-12 mt-1" th:each="ads : ${adsList}">
+                  <!-- Check if the ad's local field is 'Content Top' -->
+                  <div th:if="${ads.local == 'Content Top'}">
+                    <a th:href="@{${ads.url}}" target="_blank">
+                      <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="img-fluid w-100" />
+                    </a>
+                  </div>
+                </div>
+                <!-- ads -->
+                <!-- Content -->
+                <div class="col-md-12 mt-2" th:each="news : ${newsList}">
+                  <a th:href="@{/home/category-detail/{id}(id=${news.id})}" class="no-underline">
+                    <div class="row mb-3">
+                      <!-- Image Column -->
+                      <div class="col-md-3">
+                        <img th:src="@{${news.firstImage}}" class="img-fluid rounded" alt="Article Image" style="width: 100%; height: auto" />
+                      </div>
+                      <!-- Title & Date Column -->
+                      <div class="col-md-9 text-dark">
+                        <h5 class="text-truncate-2 mb-2" th:text="${news.title}"></h5>
+                        <p class="mb-0 text-muted">
+                          <small th:text="${#temporals.format(news.createDate, 'dd/MM/yyyy HH:mm')}"></small>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
+                <!-- Default message when newsList is empty -->
+                <div th:if="${#lists.isEmpty(newsList)}" class="col-md-12 mt-2" style="text-align: center; color: black;">
+                  <p>No news available at the moment.</p>
+                </div>
+                <!-- End Content -->
+
+                <!-- ads -->
+                <div class="col-md-12 my-2" th:each="ads : ${adsList}">
+                  <!-- Check if the ad's local field is 'Content Top' -->
+                  <div th:if="${ads.local == 'Content Bottom'}">
+                    <a th:href="@{${ads.url}}" target="_blank">
+                      <img th:src="@{'/ads-image/' + ${ads.image}}" alt="..." class="img-fluid w-100" />
+                    </a>
+                  </div>
+                </div>
+                <!-- ads -->
+
+                <!-- Pagination -->
+                <div class="col-md-12 text-dark">
+                  <div class="row align-items-center">
+                    <div class="col-md-7">
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/home/(page=${currentPage - 1}, size=${size})}" aria-label="Previous">
+                              Previous
+                            </a>
+                          </li>
+                          <!-- Loop through the pages -->
+                          <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'">
+                            <a class="page-link" th:href="@{/home/(page=${i}, size=${size})}" th:text="${i + 1}"></a>
+                          </li>
+                          <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/home/(page=${currentPage + 1}, size=${size})}" aria-label="Next">
+                              Next
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                    <div class="col-md-5 text-end">
+                      <span class="fw-normal" th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Pagination -->
+              </div>
+            </div>
+          </div>
+          <!-- end content -->
+          <!-- side right ads -->
+          <div th:replace="~{/fronted/fragments/fragment-index :: sidebar-right-ads}"></div>
+          <!--end side right ads -->
+        </div>
+      </div>
+      <!-- footer -->
+      <div th:replace="~{/fronted/fragments/fragment-index :: footer}"></div>
+      <!-- /footer -->
+    </div>
+    <!-- jQuery -->
+    <script th:replace="~{/fronted/fragments/fragment-index :: scripts}"></script>
+    <!-- jQuery -->
+  </body>
+</html>

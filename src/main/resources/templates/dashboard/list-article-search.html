@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}">
+
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+	<!-- Header -->
+	<div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+	<!-- /Header -->
+
+	<!-- Sidebar -->
+	<div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+	<!-- /Sidebar -->
+
+	<!-- Page Wrapper -->
+	<div class="page-wrapper">
+		<!-- Page Content -->
+		<div class="content container-fluid">
+			<!-- Content Starts -->
+			<div class="row">
+				<div class="col-12">
+					<div class="search-result">
+						<h3>Search Result Found For: <u><span th:text="${keyWord}"></span></u></h3>
+						<p><span th:text="${count}"></span> Results found</p>
+					</div>
+					<div class="search-lists">
+						<div class="tab-content">
+							<div class="tab-pane show active" id="results_projects">
+								<div class="row">
+									<!-- Iterate over lstdata -->
+									<div th:each="article : ${lstdata}" class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
+										<div class="card">
+											<div class="card-body">
+												<!-- Dynamic Project Title -->
+												<h4 class="project-title">
+													<a th:href="@{/article/find-by/{id}(id=${article.getId})}" th:text="${article.getName}"></a>
+												</h4>
+												<!-- Dynamic Open Tasks -->
+												<small class="block text-ellipsis m-b-15">
+													<span class="text-xs" th:text="${#temporals.format(article.getCreateDate, 'dd-MM-yyyy')}"></span>
+													<span class="text-xs" th:text="${article.getFullName}" ></span>
+												</small>
+												<!-- Dynamic Description -->
+												<p class="text-muted" th:text="${article.getTitle}" style="height: 130px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;word-wrap: break-word; ">
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Content End -->
+		</div>
+		<!-- /Page Content -->
+	</div>
+	<!-- /Page Wrapper -->
+
+</div>
+		<!-- /Main Wrapper -->
+
+	<!-- jQuery -->
+	<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+	<!-- jQuery -->
+    </body>
+</html>

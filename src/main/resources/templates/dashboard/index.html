@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}"></head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+    <!-- Header -->
+    <div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-title">Welcome <span th:text="${username}"></span>!</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
+                            <div class="dash-widget-info">
+                                <h3><span th:text="${activeArticle}"></span></h3>
+                                <span>Article</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+                            <div class="dash-widget-info">
+                                <h3><span th:text="${activeClient}"></span></h3>
+                                <span>Clients</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
+                            <div class="dash-widget-info">
+                                <h3><span th:text="${activeCategory}"></span></h3>
+                                <span>Category</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                            <div class="dash-widget-info">
+                                <h3><span th:text="${activeUser}"></span></h3>
+                                <span>Employees</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Widget -->
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Today Post</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap custom-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tittle Name</th>
+                                            <th>Category</th>
+                                            <th>Create By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="listArticleToday, iterStat : ${listArticleToday}">
+                                        <td class="text-center" th:text="${iterStat.index + 1}"></td>
+                                        <td th:text="${listArticleToday.title}"></td>
+                                        <td class="text-center" th:text="${listArticleToday.name}"></td>
+                                        <td class="text-center">
+                                            <span th:text="${listArticleToday.fullName}"></span><br>
+                                            <span th:text="${#temporals.format(listArticleToday.createDate, 'dd-MM-yyyy')}"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/article/list-article}">View all post</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Statistics Widget -->
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Marquee</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table custom-table table-nowrap mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tittle Name</th>
+                                        <th>Category</th>
+                                        <th>Create By</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="listMarquee, iterStat : ${listMarquee}">
+                                            <td class="text-center" th:text="${iterStat.index + 1}"></td>
+                                            <td>
+                                                <a th:href="@{/article/find-by/{id}(id=${listMarquee.id})}" th:text="${listMarquee.title}"></a>
+                                            </td>
+                                            <td class="text-center" th:text="${listMarquee.name}"></td>
+                                            <td class="text-center">
+                                                <span th:text="${listMarquee.fullName}"></span><br>
+                                                <span th:text="${#temporals.format(listMarquee.createDate, 'dd-MM-yyyy')}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Category</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table custom-table mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30px;">#</th>
+                                        <th>Category Name</th>
+                                        <th>Create Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="lstActiveCategory, iterStat : ${lstActiveCategory}">
+                                            <td th:text="${iterStat.index + 1}"></td> <!-- Display the index + 1 for numbering -->
+                                            <td th:text="${lstActiveCategory.name}"></td>
+                                            <td th:text="${#temporals.format(lstActiveCategory.createDate, 'dd-MM-yyyy')}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Employees</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table custom-table mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30px;">#</th>
+                                        <th>Full Name</th>
+                                        <th>Create Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="lstActiveUser, iterStat : ${lstActiveUser}">
+                                            <td th:text="${iterStat.index + 1}"></td> <!-- Display the index + 1 for numbering -->
+                                            <td th:text="${lstActiveUser.firstName + ' ' + lstActiveUser.lastName}"></td>
+                                            <td th:text="${#temporals.format(lstActiveUser.createDate, 'dd-MM-yyyy')}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+</div>
+<!-- /Main Wrapper -->
+
+<!-- jQuery -->
+<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+<!-- jQuery -->
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}">
+
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+	<!-- Header -->
+	<div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+	<!-- /Header -->
+
+	<!-- Sidebar -->
+	<div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+	<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">New Article</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+									<li class="breadcrumb-item active">New Article</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<form th:action="@{/article/create}" method="POST">
+										<div class="form-group">
+											<input type="text" placeholder="Tittle" class="form-control" name="title" id="title">
+										</div>
+										<!-- Message Display -->
+										<div id="duplicateMessage" style="display:none; color:red;margin-bottom: 10px;">This title already exists.</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<select class="select" name="cateId" id="cateId"  required>
+														<option value="" disabled selected>Select Category</option> <!-- Default empty option -->
+														<option th:each="category : ${lstCategory}"
+																th:value="${category.id}"
+																th:text="${category.name}">
+														</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+
+												</div>
+											</div>
+
+										</div>
+										<div class="form-group">
+											<textarea rows="10" class="form-control summernote" placeholder="Enter your message here" name="content" id="content"></textarea>
+										</div>
+										<div class="form-group">
+											<label class="d-block">Marquee:</label>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="statusMarquee" id="show-marquee" value="1">
+												<label class="form-check-label" for="show-marquee">Show Marquee</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="statusMarquee" id="off-marquee" value="0" checked>
+												<label class="form-check-label" for="off-marquee">Off Marquee</label>
+											</div>
+										</div>
+										<div class="form-group mb-0">
+											<div class="text-center">
+												<button class="btn btn-primary" type="submit" id="btn-submit"><span>Save</span></button>
+												<button class="btn btn-success m-l-5" type="button" id="clearButton">
+													<span>Clear</span>
+												</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- /Page Wrapper -->
+			
+        </div>
+		<!-- /Main Wrapper -->
+
+		<!-- jQuery -->
+		<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+		<!-- Summernote JS -->
+		<script th:src="@{/assets/plugins/summernote/dist/summernote-bs4.min.js}"></script>
+		<script>
+			$(document).ready(function() {
+				// Create a style element
+				var style = '<style>.note-editable.card-block { height: 800px !important; }</style>';
+				// Append the style to the head
+				$('head').append(style);
+
+				$('#clearButton').click(function(event) {
+					location.reload();
+				});
+				 $('#title').on('input', function() {
+					var title = $(this).val();
+
+					// Make AJAX call to check for duplicate title
+					$.ajax({
+						url: '/article/checkTitleDuplicate', // Adjust the path if necessary
+						method: 'GET',
+						data: { title: title },
+						success: function(response) {
+							if (response.isDuplicate) {
+								$('#duplicateMessage').show(); // Show message if duplicate
+								$('#btn-submit').prop('disabled', true);
+							} else {
+								$('#duplicateMessage').hide(); // Hide message if not duplicate
+								$('#btn-submit').prop('disabled', false);
+							}
+						},
+						error: function() {
+							console.error("Error checking title duplicate status.");
+						}
+					});
+				});
+			});
+		</script>
+
+    </body>
+</html>

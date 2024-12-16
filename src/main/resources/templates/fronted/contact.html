@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/fronted/fragments/fragment-index :: head}"> </head>
+
+  <body>
+    <div class="container-all">
+      <!-- navbar -->
+      <nav th:replace="~{/fronted/fragments/fragment-index :: nav}"></nav>
+      <!-- end navbar -->
+      <div class="container-fluid bg-light px-4 pt-2 rounded-bottom">
+        <!-- ads and logo -->
+        <div th:replace="~{/fronted/fragments/fragment-index :: logo-ads}"></div>
+        <!-- end ads and logo -->
+        <!-- marquee text slider -->
+        <marquee th:replace="~{/fronted/fragments/fragment-index :: marquee}" > </marquee>
+        <!-- end marquee text slider -->
+
+        <div class="row">
+          <div class="col-12 text-dark">
+            <div class="container my-5">
+              <!-- Page Header -->
+              <div class="text-center mb-4">
+                <h2>Contact Us</h2>
+                <p> Get in touch with our team or find more about our company.</p>
+              </div>
+              <!-- Team Members Section -->
+              <div class="row mb-5" style="font-family: sans-serif, 'Hanuman'">
+                <div class="col-md-12">
+                  <div class="row">
+                    <!-- Team Member 1 -->
+                    <div class="col-lg-4 col-md-4">
+                      <div class="text-center mt-4 p-3 mb-3">
+                        <h5>រចនាសម្ព័ន្ធអង្គភាពព័ត៌មាន</h5>
+                        <p>
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="col-md-4">
+                      <div class="border p-3 mb-3">
+                        <h5>ឯកឧត្តម ជា សុមេធី</h5>
+                        <p>
+                          រដ្ឋមន្ត្រីក្រសួងសង្គមកិច្ច អតីតយុទ្ធជន
+                          និងយុវនីតិសម្បទា ប្រធានកិត្តិយស
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Team Member 1 -->
+                    <div class="col-lg-4 col-md-4">
+                      <div class="border p-3 mb-3">
+                        <h5>ឯកឧត្តម ចាប តូ</h5>
+                        <p>
+                          អនុរដ្ឋលេខាធិការ ក្រសួងសង្គមកិច្ច អតីតយុទ្ធជន
+                          និងយុវនីតិសម្បទា អគ្គនាយក
+                        </p>
+                      </div>
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="col-md-4">
+                      <div class="border p-3 mb-3">
+                        <h5>លោក ទន់់ សុភ័ក្ត្រ</h5>
+                        <p>អគ្គនាយករង</p>
+                        <p>លេខ​ទូរស័ព្ទ​ 016 235023</p>
+                      </div>
+                    </div>
+                    <!-- Team Member 4 -->
+                    <div class="col-md-4">
+                      <div class="border p-3 mb-3">
+                        <h5>លោក ហេង គន្ធ</h5>
+                        <p>អគ្គនាយករង</p>
+                        <p>លេខ​ទូរស័ព្ទ​ 070 333031</p>
+                      </div>
+                    </div>
+                    <!-- Team Member 5 -->
+                    <div class="col-md-4">
+                      <div class="border p-3 mb-3">
+                        <h5>លោក ហេង ចាន់បូរី</h5>
+                        <p>អគ្គនាយករង</p>
+                        <p>លេខ​ទូរស័ព្ទ​ 081 342526</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company Information Section -->
+              <div class="row mb-5">
+                <div class="col-md-12">
+                  <h4>Company Information</h4>
+                  <p>
+                    <strong>Address:</strong> Group 2 Road, Chumrov Village,
+                    Sangkat Kork Roka, Phnom Penh, Cambodia
+                  </p>
+                  <p><strong>Email:</strong> sdtvnewsonline@gmail.com</p>
+                  <p><strong>Phone:</strong> +855 077 818 204</p>
+                </div>
+              </div>
+
+              <!-- Social Media Section -->
+              <div class="row">
+                <div class="col-md-12">
+                  <h4>Connect with Us</h4>
+                  <a th:href="@{${facebookLink}}" target="_blank" >
+                    <img th:src="@{/assets_frontend/img/facebook.png}" alt="" class="icon" />
+                  </a> |
+                  <a th:href="@{${youtubeLink}}" target="_blank" >
+                    <img th:src="@{/assets_frontend/img/youtube.png}" alt="" class="icon"/>
+                  </a> |
+                  <a th:href="@{${telegramLink}}" target="_blank" >
+                    <img th:src="@{/assets_frontend/img/telegrame.png}" alt="" class="icon"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- footer -->
+      <div th:replace="~{/fronted/fragments/fragment-index :: footer}"></div>
+      <!-- /footer -->
+    </div>
+    <!-- jQuery -->
+    <script th:replace="~{/fronted/fragments/fragment-index :: scripts}"></script>
+    <!-- jQuery -->
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{/dashboard/fragments/fragment :: head}"></head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+    <!-- Header -->
+    <div th:replace="~{/dashboard/fragments/fragment :: header}"></div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div th:replace="~{/dashboard/fragments/fragment :: sidebar}"></div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+            <div class="alert alert-primary alert-dismissible fade show" id="updateAlert" role="alert" th:if="${update}">
+                <strong>Update!</strong> <span th:text="${update}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" id="deleteAlert" role="alert" th:if="${delete}">
+                <strong>Error!</strong> <span th:text="${delete}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-success alert-dismissible fade show" id="createAlert" role="alert" th:if="${create}">
+                <strong>Success!</strong> <span th:text="${create}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-info alert-dismissible fade show" id="activeAlert" role="alert" th:if="${active}">
+                <strong>Note!</strong> <span th:text="${active}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show" id="warningAlert" role="alert" th:if="${warning}">
+                <strong>Warning!</strong> <span th:text="${warning}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Role</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Role</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_role">
+                            <i class="fa fa-plus"></i> Add Role</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <table class="table table-striped custom-table mb-0 datatable" id="tableReponse">
+                            <thead>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>Role Name</th>
+                                <th>Create Date</th>
+                                <th style="width: 150px;">Status</th>
+                                <th class="text-right" style="width: 30px;">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="responses, iterStat : ${lstResponsesData}">
+                                    <td th:text="${iterStat.index + 1}"></td> <!-- Display the index + 1 for numbering -->
+                                    <td th:text="${responses.name}"></td>
+                                    <td th:text="${#temporals.format(responses.createDate, 'dd-MM-yyyy HH:mm a')}"></td>
+                                    <td>
+                                        <div class="dropdown action-label">
+                                            <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa" th:classappend="${responses.status == '1'} ? 'fa-dot-circle-o text-success' : 'fa-dot-circle-o text-danger'"></i>
+                                                <span th:text="${responses.status == '1'} ? 'Active' : 'Inactive'"></span>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" th:href="@{/role/activate/{id}(id=${responses.id})}">
+                                                    <i class="fa fa-dot-circle-o text-success"></i> Active
+                                                </a>
+                                                <a class="dropdown-item" th:href="@{/role/dis-activate/{id}(id=${responses.id})}">
+                                                    <i class="fa fa-dot-circle-o text-danger"></i> Inactive
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                               aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item edit-role" href="#" data-toggle="modal"
+                                                   data-target="#edit_roles" th:attr="data-id=${responses.id}">
+                                                    <i class="fa fa-pencil m-r-5"></i> Edit
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Content -->
+
+        <!-- Add Role Modal -->
+        <div id="add_role" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/role/create}" method="POST">
+                            <div class="form-group">
+                                <label>Role Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="name" name="name" required>
+                            </div>
+                            <!-- Message Display -->
+                            <div id="duplicateMessage" style="display:none; color:red;margin-bottom: 10px;">This name already exists.</div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="3" name="description"></textarea>
+                            </div>
+
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn" id="btn-submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Role Modal -->
+
+        <!-- Edit Role Modal -->
+        <div id="edit_roles" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/role/update}" method="POST">
+                            <input class="form-control"  name="id" type="hidden">
+                            <input class="form-control"  name="status" type="hidden">
+                            <div class="form-group">
+                                <label>Role Name <span class="text-danger">*</span></label>
+                                <input class="form-control"  name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control" rows="3" name="description"></textarea>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Role Modal -->
+
+        <!-- Delete Role Modal -->
+        <div class="modal custom-modal fade" id="delete_role" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Role</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-dismiss="modal"
+                                       class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Role Modal -->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+</div>
+<!-- /Main Wrapper -->
+<!-- jQuery -->
+<script th:replace="~{/dashboard/fragments/fragment :: scripts}"></script>
+<!-- jQuery -->
+<script th:src="@{/assets/js_dashboard/role.js}"></script>
+
+
+</body>
+</html>
